@@ -1,0 +1,513 @@
+/* ───────────────────────────────────────────
+   Reset & Base
+   ─────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  background: #0a0a0f;
+  color: #e0e0e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  animation: ambientPulse 25s ease-in-out infinite;
+}
+
+@keyframes ambientPulse {
+  0%, 100% { background-color: #0a0a0f; }
+  33%      { background-color: #0d0a14; }
+  66%      { background-color: #080c12; }
+}
+
+/* ───────────────────────────────────────────
+   Particle Canvas (behind everything)
+   ─────────────────────────────────────────── */
+
+#particles-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ───────────────────────────────────────────
+   Scene & Card Container
+   ─────────────────────────────────────────── */
+
+.scene {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+}
+
+.card-container {
+  width: 420px;
+  height: 260px;
+  cursor: pointer;
+  /* entrance animation */
+  animation: cardEntrance 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* ───────────────────────────────────────────
+   Card Faces (shared)
+   ─────────────────────────────────────────── */
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 16px;
+  pointer-events: auto;
+  background: linear-gradient(
+    135deg,
+    rgba(20, 20, 35, 0.85),
+    rgba(30, 30, 50, 0.75)
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, rgb(16, 16, 28), rgb(22, 22, 38));
+}
+
+.card-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 36px;
+}
+
+.card-content a {
+  position: relative;
+  z-index: 11;
+  cursor: pointer;
+}
+
+/* ───────────────────────────────────────────
+   Holographic Overlay
+   ─────────────────────────────────────────── */
+
+.holo-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: 16px;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 0, 0, 0.08) 0%,
+    rgba(255, 154, 0, 0.08) 10%,
+    rgba(208, 222, 33, 0.08) 20%,
+    rgba(79, 220, 74, 0.08) 30%,
+    rgba(63, 218, 216, 0.08) 40%,
+    rgba(47, 201, 226, 0.08) 50%,
+    rgba(28, 127, 238, 0.08) 60%,
+    rgba(95, 21, 242, 0.08) 70%,
+    rgba(186, 12, 248, 0.08) 80%,
+    rgba(251, 7, 217, 0.08) 90%,
+    rgba(255, 0, 0, 0.08) 100%
+  );
+  background-size: 200% 200%;
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-container:hover .holo-overlay {
+  opacity: 1;
+}
+
+.card-back .holo-overlay {
+  opacity: 0 !important;
+}
+
+.card-container:hover .card-back .holo-overlay {
+  opacity: 0.12 !important;
+}
+
+.card-back .specular-highlight {
+  opacity: 0;
+}
+
+.card-container:hover .card-back .specular-highlight {
+  opacity: 0.4;
+}
+
+/* ───────────────────────────────────────────
+   Specular Highlight
+   ─────────────────────────────────────────── */
+
+.specular-highlight {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: 16px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-container:hover .specular-highlight {
+  opacity: 1;
+}
+
+/* ───────────────────────────────────────────
+   Noise Texture Overlay
+   ─────────────────────────────────────────── */
+
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  border-radius: 16px;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+/* ───────────────────────────────────────────
+   Prismatic Edge Glow
+   Separate element inside .card, pushed back in 3D
+   so it sits behind both card faces but bleeds around
+   the edges as a rainbow glow.
+   ─────────────────────────────────────────── */
+
+.card-edge-glow {
+  position: absolute;
+  inset: -2px;
+  border-radius: 18px;
+  transform: translateZ(-1px);
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--edge-hue, 0deg),
+    #ff0000, #ff8800, #ffff00, #00ff00,
+    #00ffff, #0088ff, #8800ff, #ff00ff, #ff0000
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  filter: blur(6px);
+}
+
+.card-container:hover .card-edge-glow {
+  opacity: 0.5;
+}
+
+.card.is-flipped .card-edge-glow {
+  opacity: 0 !important;
+}
+
+.card-container:hover .card.is-flipped .card-edge-glow {
+  opacity: 0.15 !important;
+}
+
+/* ───────────────────────────────────────────
+   Front Face Content
+   ─────────────────────────────────────────── */
+
+.card-front .card-content {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.monogram {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 6px 14px 6px 20px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.name {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #dddde8;
+}
+
+.name .initial {
+  color: #1a3a6b;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(200, 200, 220, 0.7);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 4px;
+  min-height: 1.4em;
+}
+
+.title.typing-cursor::after {
+  content: '|';
+  animation: cursorBlink 0.6s step-end infinite;
+  margin-left: 1px;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ───────────────────────────────────────────
+   Flip Hint
+   ─────────────────────────────────────────── */
+
+.flip-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.2);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  z-index: 6;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.card-container:hover .flip-hint {
+  opacity: 1;
+}
+
+/* ───────────────────────────────────────────
+   Back Face Content
+   ─────────────────────────────────────────── */
+
+.card-back .card-content {
+  justify-content: flex-start;
+  padding: 24px 30px;
+  gap: 14px;
+}
+
+.back-section h2 {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(200, 200, 220, 0.4);
+  margin-bottom: 4px;
+}
+
+/* Contact */
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #c8c8e0;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.2s;
+}
+
+.contact-link:hover {
+  color: #ffffff;
+}
+
+.copy-email-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 3px 5px;
+  cursor: pointer;
+  color: rgba(200, 200, 220, 0.5);
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.copy-email-btn:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.copy-email-btn .check-icon {
+  display: none;
+}
+
+.copy-email-btn.copied .copy-icon {
+  display: none;
+}
+
+.copy-email-btn.copied .check-icon {
+  display: block;
+  color: #4ade80;
+}
+
+.copy-email-btn.copied {
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  gap: 16px;
+}
+
+.social-links a {
+  color: rgba(200, 200, 220, 0.6);
+  transition: color 0.2s, transform 0.2s;
+  display: inline-flex;
+}
+
+.social-links a:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.social-icon-img {
+  filter: invert(84%) sepia(5%) saturate(500%) hue-rotate(200deg) brightness(90%);
+  transition: filter 0.2s;
+}
+
+.social-links a:hover .social-icon-img {
+  filter: invert(100%) brightness(100%);
+}
+
+/* Skills Chips */
+.skills-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(200, 200, 220, 0.8);
+  letter-spacing: 0.5px;
+}
+
+
+/* ───────────────────────────────────────────
+   Entrance Animation
+   ─────────────────────────────────────────── */
+
+@keyframes cardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) rotateX(15deg) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg) scale(1);
+  }
+}
+
+/* ───────────────────────────────────────────
+   Responsive
+   ─────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .card-container {
+    width: 340px;
+    height: 220px;
+  }
+
+  .name {
+    font-size: 22px;
+  }
+
+  .card-content {
+    padding: 24px 24px;
+  }
+
+  .card-back .card-content {
+    padding: 18px 22px;
+  }
+
+  .back-section h2 {
+    font-size: 9px;
+  }
+
+  .contact-link {
+    font-size: 12px;
+  }
+
+  .chip {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .card-container {
+    width: 300px;
+    height: 200px;
+  }
+
+  .name {
+    font-size: 20px;
+  }
+
+  .monogram {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+}

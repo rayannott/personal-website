@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airat Valiullin</title>
+  <meta name="description" content="Airat Valiullin — Software & Cloud Engineer. Personal business card.">
+  <meta name="theme-color" content="#0a0a0f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <canvas id="particles-canvas"></canvas>
+
+  <main class="scene">
+    <div class="card-container" id="card-container">
+      <div class="card" id="card">
+
+        <!-- Edge glow (sits behind both faces in 3D space) -->
+        <div class="card-edge-glow"></div>
+
+        <!-- Front Face -->
+        <div class="card-face card-front">
+          <div class="holo-overlay"></div>
+          <div class="specular-highlight"></div>
+          <div class="noise-overlay"></div>
+          <div class="card-content">
+            <div class="monogram">AV</div>
+            <h1 class="name"><span class="initial">A</span>irat <span class="initial">V</span>aliullin</h1>
+            <p class="title">Software Engineer</p>
+          </div>
+          <div class="flip-hint">click to flip</div>
+        </div>
+
+        <!-- Back Face -->
+        <div class="card-face card-back">
+          <div class="holo-overlay"></div>
+          <div class="specular-highlight"></div>
+          <div class="noise-overlay"></div>
+          <div class="card-content">
+            <div class="back-section contact-section">
+              <h2>Contact</h2>
+              <div class="contact-row">
+                <a href="mailto:me@airatvaliullin.com" class="contact-link">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                  me@airatvaliullin.com
+                </a>
+                <button class="copy-email-btn" data-email="me@airatvaliullin.com" aria-label="Copy email" title="Copy email">
+                  <svg class="copy-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <svg class="check-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="back-section social-section">
+              <h2>Links</h2>
+              <div class="social-links">
+                <a href="https://github.com/rayannott" target="_blank" rel="noopener" aria-label="GitHub">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61a3.18 3.18 0 0 0-1.33-1.76c-1.09-.74.08-.73.08-.73a2.52 2.52 0 0 1 1.84 1.24 2.56 2.56 0 0 0 3.5 1 2.56 2.56 0 0 1 .76-1.6c-2.67-.3-5.47-1.33-5.47-5.93a4.64 4.64 0 0 1 1.24-3.22 4.3 4.3 0 0 1 .12-3.18s1-.32 3.3 1.23a11.38 11.38 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23a4.3 4.3 0 0 1 .12 3.18 4.64 4.64 0 0 1 1.24 3.22c0 4.61-2.81 5.63-5.48 5.92a2.86 2.86 0 0 1 .82 2.22v3.29c0 .32.22.7.82.58A12 12 0 0 0 12 .3"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/airat-valiullin-067718256/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77A1.75 1.75 0 0 0 0 1.73v20.54A1.75 1.75 0 0 0 1.77 24h20.45A1.75 1.75 0 0 0 24 22.27V1.73A1.75 1.75 0 0 0 22.22 0Z"/></svg>
+                </a>
+                <a href="https://t.me/rayannott" target="_blank" rel="noopener" aria-label="Telegram">
+                  <img src="assets/telegram.svg" width="22" height="22" alt="Telegram" class="social-icon-img">
+                </a>
+                <a href="https://gist.github.com/rayannott/fd3e36c245b51f3e4ded29df8c15da30" target="_blank" rel="noopener" aria-label="WhatsApp">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.14-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.58c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.14.2 2.1 3.2 5.08 4.49.71.31 1.27.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35Zm-5.42 7.4h-.02a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37A9.86 9.86 0 0 1 2.12 12a9.9 9.9 0 0 1 9.9-9.9 9.87 9.87 0 0 1 7 2.9 9.83 9.83 0 0 1 2.9 7 9.9 9.9 0 0 1-9.87 9.88Zm8.41-18.27A11.82 11.82 0 0 0 12.05.1 11.87 11.87 0 0 0 1.93 17.9L0 24l6.26-1.64a11.85 11.85 0 0 0 5.67 1.44h.01A11.88 11.88 0 0 0 24 12a11.8 11.8 0 0 0-3.54-8.49Z"/></svg>
+                </a>
+                <a href="https://airatvaliullin.com" target="_blank" rel="noopener" aria-label="Website">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <div class="back-section skills-section">
+              <h2>Skills</h2>
+              <div class="skills-chips">
+                <span class="chip">python</span>
+                <span class="chip">git</span>
+                <span class="chip">ci/cd</span>
+                <span class="chip">aws</span>
+                <span class="chip">cdk</span>
+                <span class="chip">docker</span>
+                <span class="chip">linux</span>
+                <span class="chip">sql</span>
+                <span class="chip">nosql</span>
+              </div>
+            </div>
+          </div>
+          <div class="flip-hint">click to flip back</div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="js/particles.js"></script>
+  <script src="js/holographic.js"></script>
+  <script src="js/card.js"></script>
+  <script src="js/typing.js"></script>
+  <script>
+    document.querySelector(".copy-email-btn").addEventListener("click", function (e) {
+      e.stopPropagation();
+      var btn = this;
+      navigator.clipboard.writeText(btn.dataset.email).then(function () {
+        btn.classList.add("copied");
+        setTimeout(function () { btn.classList.remove("copied"); }, 1500);
+      });
+    });
+  </script>
+</body>
+</html>

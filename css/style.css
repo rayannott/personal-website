@@ -207,6 +207,13 @@ body {
   opacity: 0.4;
 }
 
+/* backface-visibility is unreliable in this preserve-3d setup,
+   so force-hide the non-active face's overlays via flip state. */
+.card.is-flipped .card-front .holo-overlay,
+.card.is-flipped .card-front .specular-highlight {
+  opacity: 0 !important;
+}
+
 /* ───────────────────────────────────────────
    Specular Highlight
    ─────────────────────────────────────────── */

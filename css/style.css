@@ -130,15 +130,25 @@ body {
   background:
     linear-gradient(
       170deg,
-      rgba(255, 255, 255, 0.08) 0%,
-      rgba(255, 255, 255, 0.02) 40%,
-      rgba(0, 0, 0, 0.1) 100%
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.01) 40%,
+      transparent 100%
     ),
-    linear-gradient(
-      135deg,
-      rgba(20, 20, 42, 0.55),
-      rgba(15, 15, 35, 0.6)
-    );
+    linear-gradient(135deg, rgb(18, 18, 34), rgb(14, 14, 30));
+}
+
+/* Some browsers leak backfaces in preserve-3d scenes.
+   Explicit visibility switching avoids front-face bleed-through. */
+.card-front {
+  transform: rotateY(0deg);
+}
+
+.card:not(.is-flipped) .card-back {
+  visibility: hidden;
+}
+
+.card.is-flipped .card-front {
+  visibility: hidden;
 }
 
 .card-content {
@@ -205,6 +215,13 @@ body {
 
 .card-container:hover .card-back .specular-highlight {
   opacity: 0.4;
+}
+
+/* backface-visibility is unreliable in this preserve-3d setup,
+   so force-hide the non-active face's overlays via flip state. */
+.card.is-flipped .card-front .holo-overlay,
+.card.is-flipped .card-front .specular-highlight {
+  opacity: 0 !important;
 }
 
 /* ───────────────────────────────────────────

@@ -62,12 +62,26 @@ body {
 }
 
 .card-container {
+  position: relative;
   width: 420px;
   height: 260px;
   cursor: pointer;
   /* entrance animation */
   animation: cardEntrance 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   opacity: 0;
+}
+
+/* Frosted-glass blur layer. Lives outside the preserve-3d card
+   so that backdrop-filter actually works (browsers disable it
+   inside a preserve-3d parent). */
+.card-glass-blur {
+  position: absolute;
+  inset: -4px;
+  border-radius: 20px;
+  backdrop-filter: blur(48px) saturate(1.3);
+  -webkit-backdrop-filter: blur(48px) saturate(1.3);
+  background: rgba(15, 15, 30, 0.1);
+  pointer-events: none;
 }
 
 .card {
@@ -90,22 +104,41 @@ body {
   -webkit-backface-visibility: hidden;
   border-radius: 16px;
   pointer-events: auto;
-  background: linear-gradient(
-    135deg,
-    rgba(20, 20, 35, 0.85),
-    rgba(30, 30, 50, 0.75)
-  );
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Liquid-glass surface: light refraction gradient over tinted base */
+  background:
+    linear-gradient(
+      170deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.03) 40%,
+      rgba(0, 0, 0, 0.08) 100%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(25, 25, 50, 0.52),
+      rgba(18, 18, 40, 0.58)
+    );
+  border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow:
-    0 25px 50px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    0 25px 60px rgba(0, 0, 0, 0.45),
+    0 0 30px rgba(80, 100, 180, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .card-back {
   transform: rotateY(180deg);
-  background: linear-gradient(135deg, rgb(16, 16, 28), rgb(22, 22, 38));
+  background:
+    linear-gradient(
+      170deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.02) 40%,
+      rgba(0, 0, 0, 0.1) 100%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(20, 20, 42, 0.55),
+      rgba(15, 15, 35, 0.6)
+    );
 }
 
 .card-content {
@@ -279,7 +312,7 @@ body {
 }
 
 .name .initial {
-  color: #1a3a6b;
+  color: #8bb8e0;
 }
 
 .title {

@@ -16,19 +16,26 @@
     var x = e.detail.x;
     var y = e.detail.y;
 
+    // Back face is rotated 180deg on Y, so invert x to keep
+    // holographic shift visually consistent with cursor direction.
     holoOverlays.forEach(function (overlay) {
-      overlay.style.backgroundPosition = (x * 100) + "% " + (y * 100) + "%";
+      var isBack = overlay.closest(".card-back") !== null;
+      var ex = isBack ? 1 - x : x;
+      overlay.style.backgroundPosition = (ex * 100) + "% " + (y * 100) + "%";
     });
 
     specularHighlights.forEach(function (hl) {
+      var isBack = hl.closest(".card-back") !== null;
+      var ex = isBack ? 1 - x : x;
       hl.style.background =
         "radial-gradient(circle at " +
-        (x * 100) + "% " + (y * 100) +
+        (ex * 100) + "% " + (y * 100) +
         "%, rgba(255,255,255,0.2) 0%, transparent 55%)";
     });
 
     if (edgeGlow) {
-      edgeGlow.style.setProperty("--edge-hue", ((x - 0.5) * 360) + "deg");
+      var angle = Math.atan2(y - 0.5, x - 0.5) * (180 / Math.PI);
+      edgeGlow.style.setProperty("--edge-hue", angle + "deg");
     }
   });
 })();

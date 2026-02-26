@@ -8,25 +8,21 @@
 (function () {
   "use strict";
 
-  var holoOverlays = document.querySelectorAll(".holo-overlay");
-  var specularHighlights = document.querySelectorAll(".specular-highlight");
+  var holoOverlays = document.querySelectorAll(".card-front .holo-overlay");
+  var specularHighlights = document.querySelectorAll(".card-front .specular-highlight");
   var edgeGlow = document.querySelector(".card-edge-glow");
 
   window.addEventListener("cardtilt", function (e) {
     var x = e.detail.x;
     var y = e.detail.y;
 
-    // Back face is rotated 180deg on Y, so invert x to keep
-    // holographic shift visually consistent with cursor direction.
     holoOverlays.forEach(function (overlay) {
-      var isBack = overlay.closest(".card-back") !== null;
-      var ex = isBack ? 1 - x : x;
+      var ex = x;
       overlay.style.backgroundPosition = (ex * 100) + "% " + (y * 100) + "%";
     });
 
     specularHighlights.forEach(function (hl) {
-      var isBack = hl.closest(".card-back") !== null;
-      var ex = isBack ? 1 - x : x;
+      var ex = x;
       hl.style.background =
         "radial-gradient(circle at " +
         (ex * 100) + "% " + (y * 100) +

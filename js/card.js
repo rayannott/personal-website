@@ -13,6 +13,7 @@
   var card = document.getElementById("card");
   var frontFace = document.querySelector(".card-front");
   var backFace = document.querySelector(".card-back");
+  var copyEmailBtn = document.querySelector(".copy-email-btn");
 
   var MAX_TILT = 20;
   var TILT_EASE = 0.08;
@@ -35,7 +36,33 @@
     backFace.style.pointerEvents = isFlipped ? "auto" : "none";
   }
 
+  function setupCopyEmail() {
+    if (!copyEmailBtn) return;
+
+    copyEmailBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      if (!navigator.clipboard) return;
+
+      var btn = this;
+      navigator.clipboard.writeText(btn.dataset.email).then(function () {
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.classList.remove("copied");
+        }, 1500);
+      });
+    });
+  }
+
+  function dispatchCardTilt(x, y, rotX, rotY) {
+    window.dispatchEvent(
+      new CustomEvent("cardtilt", {
+        detail: { x: x, y: y, rotX: rotX, rotY: rotY },
+      })
+    );
+  }
+
   setFaceInteractivity();
+  setupCopyEmail();
 
   // ── Flip handling on the container (outside 3D context) ──
 
@@ -65,22 +92,14 @@
     targetRotY = (x - 0.5) * MAX_TILT * 2;
     targetRotX = -(y - 0.5) * MAX_TILT * 2;
 
-    window.dispatchEvent(
-      new CustomEvent("cardtilt", {
-        detail: { x: x, y: y, rotX: targetRotX, rotY: targetRotY },
-      })
-    );
+    dispatchCardTilt(x, y, targetRotX, targetRotY);
   });
 
   container.addEventListener("mouseleave", function () {
     hovering = false;
     targetRotX = 0;
     targetRotY = 0;
-    window.dispatchEvent(
-      new CustomEvent("cardtilt", {
-        detail: { x: 0.5, y: 0.5, rotX: 0, rotY: 0 },
-      })
-    );
+    dispatchCardTilt(0.5, 0.5, 0, 0);
   });
 
   // ── Touch tracking ─────────────────────────
@@ -99,11 +118,7 @@
       hovering = true;
       startAnimation();
 
-      window.dispatchEvent(
-        new CustomEvent("cardtilt", {
-          detail: { x: x, y: y, rotX: targetRotX, rotY: targetRotY },
-        })
-      );
+      dispatchCardTilt(x, y, targetRotX, targetRotY);
     },
     { passive: false }
   );
@@ -112,11 +127,7 @@
     hovering = false;
     targetRotX = 0;
     targetRotY = 0;
-    window.dispatchEvent(
-      new CustomEvent("cardtilt", {
-        detail: { x: 0.5, y: 0.5, rotX: 0, rotY: 0 },
-      })
-    );
+    dispatchCardTilt(0.5, 0.5, 0, 0);
   });
 
   // ── Animation loop ─────────────────────────

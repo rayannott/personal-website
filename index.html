@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Airat Valiullin</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <meta name="description" content="Airat Valiullin — Software & Cloud Engineer. Personal business card.">
   <meta name="theme-color" content="#0a0a0f">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,11 +39,9 @@
 
         <!-- Back Face -->
         <div class="card-face card-back">
-          <div class="holo-overlay"></div>
-          <div class="specular-highlight"></div>
           <div class="noise-overlay"></div>
           <div class="card-content">
-            <div class="back-section contact-section">
+            <div class="back-section">
               <h2>Contact</h2>
               <div class="contact-row">
                 <a href="mailto:me@airatvaliullin.com" class="contact-link">
@@ -56,7 +55,7 @@
               </div>
             </div>
 
-            <div class="back-section social-section">
+            <div class="back-section">
               <h2>Links</h2>
               <div class="social-links">
                 <a href="https://github.com/rayannott" target="_blank" rel="noopener" aria-label="GitHub">
@@ -77,7 +76,7 @@
               </div>
             </div>
 
-            <div class="back-section skills-section">
+            <div class="back-section">
               <h2>Skills</h2>
               <div class="skills-chips">
                 <span class="chip">python</span>
@@ -103,15 +102,5 @@
   <script src="js/holographic.js"></script>
   <script src="js/card.js"></script>
   <script src="js/typing.js"></script>
-  <script>
-    document.querySelector(".copy-email-btn").addEventListener("click", function (e) {
-      e.stopPropagation();
-      var btn = this;
-      navigator.clipboard.writeText(btn.dataset.email).then(function () {
-        btn.classList.add("copied");
-        setTimeout(function () { btn.classList.remove("copied"); }, 1500);
-      });
-    });
-  </script>
 </body>
 </html>

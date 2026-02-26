@@ -12,11 +12,14 @@
   var ctx = canvas.getContext("2d");
 
   var PARTICLE_COUNT = 100;
+  var MAX_PARTICLES = 220;
   var CONNECTION_DISTANCE = 120;
   var MOUSE_RADIUS = 150;
   var MOUSE_REPEL_FORCE = 0.02;
   var PARTICLE_COLOR = "rgba(180, 180, 220, ";
   var LINE_COLOR = "rgba(140, 140, 200, ";
+  var CONSTELLATION_SIZE = 14;
+  var CONSTELLATION_RADIUS = 50;
 
   var particles = [];
   var mouse = { x: -9999, y: -9999 };
@@ -35,6 +38,30 @@
       vy: (Math.random() - 0.5) * 0.4,
       r: Math.random() * 1.5 + 0.5,
     };
+  }
+
+  function createParticleAt(x, y) {
+    var angle = Math.random() * Math.PI * 2;
+    var distance = Math.random() * CONSTELLATION_RADIUS;
+    return {
+      x: x + Math.cos(angle) * distance,
+      y: y + Math.sin(angle) * distance,
+      vx: (Math.random() - 0.5) * 1.2,
+      vy: (Math.random() - 0.5) * 1.2,
+      r: Math.random() * 1.5 + 0.5,
+    };
+  }
+
+  function trimParticles() {
+    if (particles.length <= MAX_PARTICLES) return;
+    particles.splice(0, particles.length - MAX_PARTICLES);
+  }
+
+  function spawnConstellation(x, y) {
+    for (var i = 0; i < CONSTELLATION_SIZE; i++) {
+      particles.push(createParticleAt(x, y));
+    }
+    trimParticles();
   }
 
   function init() {
@@ -110,6 +137,11 @@
   document.addEventListener("mouseleave", function () {
     mouse.x = -9999;
     mouse.y = -9999;
+  });
+
+  document.addEventListener("click", function (e) {
+    if (e.target.closest("#card-container")) return;
+    spawnConstellation(e.clientX, e.clientY);
   });
 
   window.addEventListener("resize", function () {

@@ -197,24 +197,8 @@ body {
   transition: opacity 0.3s ease;
 }
 
-.card-container:hover .holo-overlay {
+.card-container:hover .card-front .holo-overlay {
   opacity: 1;
-}
-
-.card-back .holo-overlay {
-  opacity: 0 !important;
-}
-
-.card-container:hover .card-back .holo-overlay {
-  opacity: 0.12 !important;
-}
-
-.card-back .specular-highlight {
-  opacity: 0;
-}
-
-.card-container:hover .card-back .specular-highlight {
-  opacity: 0.4;
 }
 
 /* backface-visibility is unreliable in this preserve-3d setup,
@@ -243,7 +227,7 @@ body {
   transition: opacity 0.3s ease;
 }
 
-.card-container:hover .specular-highlight {
+.card-container:hover .card-front .specular-highlight {
   opacity: 1;
 }
 
@@ -292,10 +276,6 @@ body {
 
 .card.is-flipped .card-edge-glow {
   opacity: 0 !important;
-}
-
-.card-container:hover .card.is-flipped .card-edge-glow {
-  opacity: 0.15 !important;
 }
 
 /* ───────────────────────────────────────────

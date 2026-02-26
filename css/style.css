@@ -205,16 +205,8 @@ body {
   opacity: 0 !important;
 }
 
-.card-container:hover .card-back .holo-overlay {
-  opacity: 0.12 !important;
-}
-
 .card-back .specular-highlight {
-  opacity: 0;
-}
-
-.card-container:hover .card-back .specular-highlight {
-  opacity: 0.4;
+  opacity: 0 !important;
 }
 
 /* backface-visibility is unreliable in this preserve-3d setup,
@@ -292,10 +284,6 @@ body {
 
 .card.is-flipped .card-edge-glow {
   opacity: 0 !important;
-}
-
-.card-container:hover .card.is-flipped .card-edge-glow {
-  opacity: 0.15 !important;
 }
 
 /* ───────────────────────────────────────────

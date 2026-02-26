@@ -13,6 +13,7 @@
   var card = document.getElementById("card");
   var frontFace = document.querySelector(".card-front");
   var backFace = document.querySelector(".card-back");
+  var copyEmailBtn = document.querySelector(".copy-email-btn");
 
   var MAX_TILT = 20;
   var TILT_EASE = 0.08;
@@ -35,7 +36,25 @@
     backFace.style.pointerEvents = isFlipped ? "auto" : "none";
   }
 
+  function setupCopyEmail() {
+    if (!copyEmailBtn) return;
+
+    copyEmailBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      if (!navigator.clipboard) return;
+
+      var btn = this;
+      navigator.clipboard.writeText(btn.dataset.email).then(function () {
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.classList.remove("copied");
+        }, 1500);
+      });
+    });
+  }
+
   setFaceInteractivity();
+  setupCopyEmail();
 
   // ── Flip handling on the container (outside 3D context) ──
 

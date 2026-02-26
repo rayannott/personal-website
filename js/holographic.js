@@ -8,8 +8,8 @@
 (function () {
   "use strict";
 
-  var holoOverlays = document.querySelectorAll(".holo-overlay");
-  var specularHighlights = document.querySelectorAll(".specular-highlight");
+  var holoOverlays = document.querySelectorAll(".card-front .holo-overlay");
+  var specularHighlights = document.querySelectorAll(".card-front .specular-highlight");
   var edgeGlow = document.querySelector(".card-edge-glow");
 
   window.addEventListener("cardtilt", function (e) {

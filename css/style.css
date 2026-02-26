@@ -290,15 +290,44 @@ body {
 }
 
 .monogram {
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 6px 14px 6px 20px;
+  padding: 8px 14px;
   border-radius: 6px;
   margin-bottom: 12px;
+  line-height: 0;
+  display: inline-block;
+}
+
+.monogram-svg {
+  width: 48px;
+  height: 17px;
+  overflow: visible;
+}
+
+.mono-stroke {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.25);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: drawStroke 0.5s ease forwards;
+}
+
+.mono-a-bar {
+  stroke-dasharray: 25;
+  stroke-dashoffset: 25;
+}
+
+.mono-a-left  { animation-delay: 0.8s; }
+.mono-a-right { animation-delay: 1.0s; }
+.mono-a-bar   { animation-delay: 1.15s; animation-duration: 0.3s; }
+.mono-v-left  { animation-delay: 1.25s; }
+.mono-v-right { animation-delay: 1.45s; }
+
+@keyframes drawStroke {
+  to { stroke-dashoffset: 0; }
 }
 
 .name {
@@ -472,8 +501,45 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(200, 200, 220, 0.8);
   letter-spacing: 0.5px;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* ───────────────────────────────────────────
+   Back Face Entrance Animations
+   ─────────────────────────────────────────── */
+
+.card-back .back-section {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.card.is-flipped .back-section {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card.is-flipped .back-section:nth-child(1) { transition-delay: 0.15s; }
+.card.is-flipped .back-section:nth-child(2) { transition-delay: 0.25s; }
+.card.is-flipped .back-section:nth-child(3) { transition-delay: 0.35s; }
+
+/* Skill chips: staggered pop-in */
+.card.is-flipped .chip {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.card.is-flipped .chip:nth-child(1) { transition-delay: 0.50s; }
+.card.is-flipped .chip:nth-child(2) { transition-delay: 0.53s; }
+.card.is-flipped .chip:nth-child(3) { transition-delay: 0.56s; }
+.card.is-flipped .chip:nth-child(4) { transition-delay: 0.59s; }
+.card.is-flipped .chip:nth-child(5) { transition-delay: 0.62s; }
+.card.is-flipped .chip:nth-child(6) { transition-delay: 0.65s; }
+.card.is-flipped .chip:nth-child(7) { transition-delay: 0.68s; }
+.card.is-flipped .chip:nth-child(8) { transition-delay: 0.71s; }
+.card.is-flipped .chip:nth-child(9) { transition-delay: 0.74s; }
 
 /* ───────────────────────────────────────────
    Entrance Animation
@@ -537,7 +603,34 @@ body {
   }
 
   .monogram {
-    font-size: 12px;
     padding: 4px 10px;
+  }
+
+  .monogram-svg {
+    width: 40px;
+    height: 14px;
+  }
+}
+
+/* ───────────────────────────────────────────
+   Reduced Motion
+   ─────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .mono-stroke {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+
+  .card-back .back-section {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .chip {
+    transition: none;
+    opacity: 1;
+    transform: none;
   }
 }

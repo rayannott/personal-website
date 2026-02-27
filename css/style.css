@@ -290,12 +290,53 @@ body {
 }
 
 .monogram {
+  position: relative;
   border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 8px 14px;
   border-radius: 6px;
   margin-bottom: 12px;
   line-height: 0;
   display: inline-block;
+}
+
+.monogram-tooltip {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  width: 280px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(25, 25, 50, 0.92), rgba(18, 18, 40, 0.96));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(200, 200, 220, 0.8);
+  text-align: center;
+  letter-spacing: 0.3px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 20;
+}
+
+/* Arrow pointing down from tooltip */
+.monogram-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(22, 22, 42, 0.94);
+}
+
+.monogram:hover .monogram-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .monogram-svg {
@@ -581,6 +622,12 @@ body {
     font-size: 10px;
     padding: 2px 8px;
   }
+
+  .monogram-tooltip {
+    width: 240px;
+    font-size: 11px;
+    padding: 12px 14px;
+  }
 }
 
 @media (max-width: 380px) {
@@ -623,5 +670,9 @@ body {
     transition: none;
     opacity: 1;
     transform: none;
+  }
+
+  .monogram-tooltip {
+    transition: none;
   }
 }

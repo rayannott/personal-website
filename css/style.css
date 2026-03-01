@@ -595,7 +595,7 @@ body {
 @media (max-width: 480px) {
   .card-container {
     width: 340px;
-    height: 220px;
+    height: 260px;
   }
 
   .name {
@@ -607,7 +607,7 @@ body {
   }
 
   .card-back .card-content {
-    padding: 18px 22px 30px;
+    padding: 18px 22px;
   }
 
   .back-section h2 {
@@ -633,7 +633,7 @@ body {
 @media (max-width: 380px) {
   .card-container {
     width: 300px;
-    height: 200px;
+    height: 260px;
   }
 
   .name {

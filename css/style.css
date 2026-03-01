@@ -623,6 +623,14 @@ body {
     padding: 2px 8px;
   }
 
+  .card-back .flip-hint {
+    display: none;
+  }
+
+  .chip:nth-child(n+11) {
+    display: none;
+  }
+
   .monogram-tooltip {
     width: 240px;
     font-size: 11px;

@@ -11,6 +11,9 @@
   var titleEl = document.querySelector(".title");
   if (!titleEl) return;
 
+  // Reduced motion: leave the authored text in place, untyped.
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
   var fullText = titleEl.textContent;
   var charIndex = 0;
   var CHAR_DELAY = 70;

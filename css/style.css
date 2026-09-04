@@ -62,6 +62,13 @@ body {
 }
 
 .card-container {
+  /* Pointer position (0-1) published by card.js; drives the holographic
+     sheen, the specular spot and the prismatic edge hue. */
+  --mx: 0.5;
+  --my: 0.5;
+  --edge-hue: 0deg;
+  --card-radius: 16px;
+
   position: relative;
   width: 420px;
   height: 260px;
@@ -77,7 +84,7 @@ body {
 .card-glass-blur {
   position: absolute;
   inset: -4px;
-  border-radius: 20px;
+  border-radius: calc(var(--card-radius) + 4px);
   backdrop-filter: blur(48px) saturate(1.3);
   -webkit-backdrop-filter: blur(48px) saturate(1.3);
   background: rgba(15, 15, 30, 0.1);
@@ -102,7 +109,7 @@ body {
   inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  border-radius: 16px;
+  border-radius: var(--card-radius);
   pointer-events: auto;
   /* Liquid-glass surface: light refraction gradient over tinted base */
   background:
@@ -171,12 +178,18 @@ body {
    Holographic Overlay
    ─────────────────────────────────────────── */
 
-.holo-overlay {
+/* Shared geometry for the three stacked light / texture layers. */
+.holo-overlay,
+.specular-highlight,
+.noise-overlay {
   position: absolute;
   inset: 0;
-  z-index: 3;
+  border-radius: var(--card-radius);
   pointer-events: none;
-  border-radius: 16px;
+}
+
+.holo-overlay {
+  z-index: 3;
   background: linear-gradient(
     125deg,
     rgba(255, 0, 0, 0.08) 0%,
@@ -192,6 +205,7 @@ body {
     rgba(255, 0, 0, 0.08) 100%
   );
   background-size: 200% 200%;
+  background-position: calc(var(--mx) * 100%) calc(var(--my) * 100%);
   mix-blend-mode: screen;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -213,15 +227,11 @@ body {
    ─────────────────────────────────────────── */
 
 .specular-highlight {
-  position: absolute;
-  inset: 0;
   z-index: 4;
-  pointer-events: none;
-  border-radius: 16px;
   background: radial-gradient(
-    circle at 50% 50%,
-    rgba(255, 255, 255, 0.15) 0%,
-    transparent 60%
+    circle at calc(var(--mx) * 100%) calc(var(--my) * 100%),
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 55%
   );
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -236,11 +246,7 @@ body {
    ─────────────────────────────────────────── */
 
 .noise-overlay {
-  position: absolute;
-  inset: 0;
   z-index: 5;
-  pointer-events: none;
-  border-radius: 16px;
   opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
@@ -257,7 +263,7 @@ body {
 .card-edge-glow {
   position: absolute;
   inset: -2px;
-  border-radius: 18px;
+  border-radius: calc(var(--card-radius) + 2px);
   transform: translateZ(-1px);
   pointer-events: none;
   background: conic-gradient(
@@ -410,20 +416,32 @@ body {
 .flip-hint {
   position: absolute;
   bottom: 12px;
-  left: 0;
-  right: 0;
-  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font: inherit;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.2);
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  z-index: 6;
-  transition: opacity 0.3s;
-  pointer-events: none;
+  cursor: pointer;
+  transition: color 0.3s;
 }
 
-.card-container:hover .flip-hint {
-  opacity: 1;
+.flip-hint:hover,
+.flip-hint:focus-visible {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.flip-hint:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.35);
+  outline-offset: 3px;
 }
 
 /* ───────────────────────────────────────────
@@ -515,15 +533,6 @@ body {
 .social-links a:hover {
   color: #ffffff;
   transform: translateY(-2px);
-}
-
-.social-icon-img {
-  filter: invert(84%) sepia(5%) saturate(500%) hue-rotate(200deg) brightness(90%);
-  transition: filter 0.2s;
-}
-
-.social-links a:hover .social-icon-img {
-  filter: invert(100%) brightness(100%);
 }
 
 /* Skills Chips */
@@ -663,6 +672,17 @@ body {
    ─────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
+
+  /* cardEntrance starts at opacity 0, so cancelling it needs an explicit
+     reset or the card never appears. */
+  .card-container {
+    animation: none;
+    opacity: 1;
+  }
+
   .mono-stroke {
     animation: none;
     stroke-dashoffset: 0;

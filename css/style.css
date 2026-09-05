@@ -148,6 +148,13 @@ body {
    Explicit visibility switching avoids front-face bleed-through. */
 .card-front {
   transform: rotateY(0deg);
+  /* Keeps the front-face children in 3D space so they can be pushed
+     towards the viewer at different depths (see Layered Depth below). */
+  transform-style: preserve-3d;
+}
+
+.card-front .card-content {
+  transform-style: preserve-3d;
 }
 
 .card:not(.is-flipped) .card-back {
@@ -206,7 +213,11 @@ body {
   );
   background-size: 200% 200%;
   background-position: calc(var(--mx) * 100%) calc(var(--my) * 100%);
-  mix-blend-mode: screen;
+  /* No mix-blend-mode here: a blended child forces its parent to form a
+     backdrop group, which flattens .card-front out of preserve-3d and
+     collapses the layered depth below. Over a card this dark, screen
+     blending of an 0.08-alpha gradient is indistinguishable from normal
+     compositing anyway. */
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -407,6 +418,42 @@ body {
 @keyframes cursorBlink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+/* ───────────────────────────────────────────
+   Layered Depth (front face)
+
+   Each front-face layer sits at its own Z offset, so tilting the card
+   slides the layers against each other instead of rotating a flat
+   image. Purely a transform, so it rides the existing composited
+   rotation at no extra cost.
+   ─────────────────────────────────────────── */
+
+.monogram {
+  transform: translateZ(34px);
+}
+
+.card-front .name {
+  transform: translateZ(22px);
+  text-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+}
+
+.card-front .title {
+  transform: translateZ(13px);
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.card-front .flip-hint {
+  transform: translateX(-50%) translateZ(7px);
+}
+
+/* The tooltip has to clear the monogram it is anchored to. */
+.monogram-tooltip {
+  transform: translateX(-50%) translateY(6px) translateZ(20px);
+}
+
+.monogram:hover .monogram-tooltip {
+  transform: translateX(-50%) translateY(0) translateZ(20px);
 }
 
 /* ───────────────────────────────────────────
